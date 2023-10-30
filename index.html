@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    .timer {
+      max-width: 500px;
+      height: 267px;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 40px;
+      border: solid;
+      border-color: black;
+      background-color: rgb(95, 95, 95);
+    }
+
+    .items {
+      margin-left: 10px;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+      color: rgb(194, 194, 194);
+      text-align: center;
+      background-color: rgb(61, 61, 61);
+    }
+
+    button {
+      width: 128px;
+      height: 50px;
+      background-color: rgb(71, 71, 71);
+      color: rgb(194, 194, 194);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="timer">
+    <div class="items">
+      <input class="hour" placeholder="Ч" /> :
+      <input class="min" placeholder="М" /> :
+      <input class="sec" placeholder="C" />
+      <button class="go">Старт!</button>
+      <button class="reset">Сброс</button>
+    </div>
+  </div>
+  <audio id="myAudio">
+    <source src="alarm.ogg" type="audio/ogg" />
+  </audio>
+  <script>
+    const x = document.getElementById("myAudio");
+
+    let go = document.querySelector(".go");
+    let time = null;
+    go.addEventListener("click", function () {
+      let hours = document.querySelector(".hour").value;
+      let minutes = document.querySelector(".min").value;
+      let seconds = document.querySelector(".sec").value;
+      time = setInterval(function () {
+        console.log(seconds);
+
+        if (seconds < 60) {
+          seconds = seconds - 1;
+        }
+        if (seconds == -1) {
+          seconds = 59;
+          minutes = minutes - 1;
+        }
+        if (minutes == -1) {
+          minutes = 59;
+          hours = hours - 1;
+        }
+        if (minutes == 0 && hours == 0 && seconds == 0) {
+          clearInterval(time);
+          x.play();
+        }
+        if (hours >= 24 || minutes >= 60 || seconds >= 60) {
+          alert("Ошибка!");
+          clearInterval(time);
+        }
+        document.getElementsByClassName("hour")[0].value = hours;
+        document.getElementsByClassName("min")[0].value = minutes;
+        document.getElementsByClassName("sec")[0].value = seconds;
+      }, 1000);
+    });
+    document.querySelector(".reset").onclick = reset;
+    function reset() {
+      location.reload();
+    }
+  </script>
+</body>
+
+</html>
